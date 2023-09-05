@@ -44,4 +44,16 @@ void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str);
  */
 bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str);
 
+/*
+ * Function:  _hash
+ * --------------------
+ *  Tests the static hashing function _hash in bloom_filter.c
+ *
+ *  bit_arr_ptr: pointer to array
+ *  bit_arr_size: size of array
+ *  str: string to hash
+ *  k: number of hashing function
+ *
+ *  returns: hash value
+ */
 int test_hash(bool* bit_arr_ptr, int bit_arr_size, char* str, int k);
