@@ -1,3 +1,9 @@
+////////////////////////////////////////////////////////////////////////////////////////////////
+// bloom_filter.c
+// ---------------------------------------------------------------------------------------------
+// Author: Tan Pei Sheng
+// Last modified: September 6th 2023
+//////////////////////////////////////////////////////////////////////////////////////////////
 #include "bloom_filter.h"
 
 static int _hash(char* str, int bit_arr_size, int k);
@@ -5,7 +11,7 @@ static int _hash(char* str, int bit_arr_size, int k);
  * Function:  _APHash
  * --------------------
  * Hash function used for hashing SHA-256 output.
- * Sourced from: https://www.programmingalgorithms.com/algorithm/ap-hash/c/
+ * Sourced from: https://www.programmingalgorithms.com/algorithm/ap-hash/c/, accessed on September 6th 2023
  *
  * str: string to hash
  * length: length of string
