@@ -40,21 +40,56 @@ bool bloom_filter_search(int* bit_arr_ptr, int bit_arr_size, char* str){
 }
 
 static int _hash1(char* str, int bit_arr_size){
-    return 0;
+    // _hash1 idea sourced from: https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/
+    int hash = 0;
+    int str_length = strlen(str);
+    // for every character, cast it to int and add to hash, then modulo hash by bit_arr_size.
+    for (int i = 0; i < str_length; i++) 
+    {
+        hash = (hash + ((int)str[i]));
+        hash = hash % bit_arr_size;
+    }
+    return hash;
 }
 
 static int _hash2(char* str, int bit_arr_size){
-    return 0;
+    int hash = 0;
+    int str_length = strlen(str);
+    // for every character, cast to int multiply by 2-squared and add to hash, after getting sum modulo hash by bit_arr_size.
+    for (int i = 0; i < str_length; i++) 
+    {
+        hash = (hash + ((int)str[i]) * 2 * 2);
+        hash = hash % bit_arr_size;
+    }
+    return hash;
 }
 
 static int _hash3(char* str, int bit_arr_size){
-    return 0;
+    int hash = 0;
+    int str_length = strlen(str);
+    for(int i = 0; i < str_length; i++){
+        hash = (hash + ((int)str[i]) * 3 * 3 * 3);
+        hash = hash % bit_arr_size;
+    }
+    return hash;
 }
 
 static int _hash4(char* str, int bit_arr_size){
-    return 0;
+    int hash = 0;
+    int str_length = strlen(str);
+    for(int i = 0; i < str_length; i++){
+        hash = (hash + ((int)str[i]) * 4 * 4 * 4 * 4);
+        hash = hash % bit_arr_size;
+    }
+    return hash;
 }
 
 static int _hash5(char* str, int bit_arr_size){
-    return 0;
+    int hash = 0;
+    int str_length = strlen(str);
+    for(int i = 0; i < str_length; i++){
+        hash = (hash + ((int)str[i]) * 5 * 5 * 5 * 5 * 5);
+        hash = hash % bit_arr_size;
+    }
+    return hash;
 }
