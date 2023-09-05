@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <string.h>
+#include "./sha-256.h"
 
 /*
  * Function:  bloom_filter_create_bit_array
@@ -36,3 +37,5 @@ void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str);
  *  returns: true if string is found, false otherwise
  */
 bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str);
+
+int test_hash(bool* bit_arr_ptr, int bit_arr_size, char* str, int k);
