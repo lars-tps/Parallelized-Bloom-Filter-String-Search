@@ -11,7 +11,7 @@
  * 
  *  returns: An array of boolean bits of size bit_arr_size
  */
-bool * bloom_filter_create_bit_array(bool * bit_arr_ptr, int bit_arr_size);
+bool* bloom_filter_create_bit_array(bool* bit_arr_ptr, int bit_arr_size);
 
 /*
  * Function:  bloom_filter_insert
@@ -22,7 +22,7 @@ bool * bloom_filter_create_bit_array(bool * bit_arr_ptr, int bit_arr_size);
  *  bit_arr_size: size of array
  *  str: string to insert
  */
-void bloom_filter_insert(int* bit_arr_ptr, int bit_arr_size, char* str);
+void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str);
 
 /*
  * Function:  bloom_filter_search
@@ -35,4 +35,4 @@ void bloom_filter_insert(int* bit_arr_ptr, int bit_arr_size, char* str);
  *
  *  returns: true if string is found, false otherwise
  */
-bool bloom_filter_search(int* bit_arr_ptr, int bit_arr_size, char* str);
+bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str);
