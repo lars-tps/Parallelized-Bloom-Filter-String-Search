@@ -1,4 +1,5 @@
 #include "./bloom_filter.h"
+#include <stdlib.h>
 #include <stdio.h>
 #define BIT_ARR_SIZE 8583759
 
@@ -20,8 +21,9 @@ int main(int argc, char* argv[]){
                 printf("Error opening file %s", argv[i]);
                 return 1;
             }
-            char str[100];
-            while (fscanf(fp, "%s", str) != EOF) {
+            char str[100]; 
+            while (fscanf(fp, "%s\n", str) != EOF) {
+                printf("%s\n", str);
                 bloom_filter_insert(bit_arr_ptr, BIT_ARR_SIZE, str);
             }
             fclose(fp);
@@ -33,8 +35,8 @@ int main(int argc, char* argv[]){
             printf("Error opening file %s", argv[argc - 1]);
             return 1;
         }
-        char str[100];
-        while (fscanf(fp, "%s", str) != EOF) {
+        char str[100]; 
+        while (fscanf(fp, "%s\n", str) != EOF) {
             if (bloom_filter_search(bit_arr_ptr, BIT_ARR_SIZE, str)) {
                 printf("%s is probably in the bloom filter.\n", str);
             } else {
