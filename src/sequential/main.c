@@ -35,7 +35,8 @@ int main(int argc, char* argv[]){
             return 1;
         }
         char str[100]; 
-        while (fscanf(fp, "%s\n", str) != EOF) {
+        int tag;
+        while (fscanf(fp, "%s %d\n", str, &tag) != EOF) {
             if (bloom_filter_search(bit_arr_ptr, BIT_ARR_SIZE, str)) {
                 printf("%s is probably in the bloom filter.\n", str);
             } else {
