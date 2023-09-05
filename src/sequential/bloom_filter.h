@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <string.h>
 
 /*
  * Function:  bloom_filter_create_bit_array
