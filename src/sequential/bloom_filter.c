@@ -27,6 +27,15 @@ void bloom_filter_insert(int* bit_arr_ptr, int bit_arr_size, char* str){
 }
 
 bool bloom_filter_search(int* bit_arr_ptr, int bit_arr_size, char* str){
+    int a = _hash1(str, bit_arr_size);
+    int b = _hash2(str, bit_arr_size);
+    int c = _hash3(str, bit_arr_size);
+    int d = _hash4(str, bit_arr_size);
+    int e = _hash5(str, bit_arr_size);
+
+    if (bit_arr_ptr[a] && bit_arr_ptr[b] && bit_arr_ptr[c] && bit_arr_ptr[d] && bit_arr_ptr[e]){
+        return true;
+    }
     return false;
 }
 
