@@ -1,7 +1,6 @@
 #include "bloom_filter.h"
 
 bool * bloom_filter_create_bit_array(bool * bit_arr_ptr, int bit_arr_size){
-    bit_arr_ptr = malloc(bit_arr_size * sizeof(bool));
     for(int i = 0; i < bit_arr_size; i++){
         bit_arr_ptr[i] = false;
     }
