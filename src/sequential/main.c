@@ -23,7 +23,6 @@ int main(int argc, char* argv[]){
             }
             char str[100]; 
             while (fscanf(fp, "%s\n", str) != EOF) {
-                printf("%s\n", str);
                 bloom_filter_insert(bit_arr_ptr, BIT_ARR_SIZE, str);
             }
             fclose(fp);
