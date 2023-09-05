@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // sha-256.c
 // ---------------------------------------------------------------------------------------------
-// Title: GraphicsDrawer source code
+// Title: sha-2
 // Author: Alain Mosnier
 // Date accessed: September 6th 2023
 // Availability: https://github.com/amosnier/sha-2/tree/master
