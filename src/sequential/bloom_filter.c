@@ -1,10 +1,18 @@
 #include "bloom_filter.h"
 
-static int _hash1(char* str, int bit_arr_size);
-static int _hash2(char* str, int bit_arr_size);
-static int _hash3(char* str, int bit_arr_size);
-static int _hash4(char* str, int bit_arr_size);
-static int _hash5(char* str, int bit_arr_size);
+static int _hash(char* str, int bit_arr_size, int k);
+/*
+ * Function:  _APHash
+ * --------------------
+ * Hash function used for hashing SHA-256 output.
+ * Sourced from: https://www.programmingalgorithms.com/algorithm/ap-hash/c/
+ *
+ * str: string to hash
+ * length: length of string
+ * 
+ * returns: hash value
+ */
+unsigned int _APHash(char* str, unsigned int length);
 
 bool* bloom_filter_create_bit_array(bool* bit_arr_ptr, int bit_arr_size){
     for(int i = 0; i < bit_arr_size; i++){
@@ -17,11 +25,11 @@ void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str){
     
     if (!bloom_filter_search(bit_arr_ptr, bit_arr_size, str)){
         // Number of hashing function is based on 1,376,656 words of input, 5% false positive rate, and bit array size of 8,583,759
-        int a = _hash1(str, bit_arr_size);
-        int b = _hash2(str, bit_arr_size);
-        int c = _hash3(str, bit_arr_size);
-        int d = _hash4(str, bit_arr_size);
-        int e = _hash5(str, bit_arr_size);
+        int a = _hash(str, bit_arr_size, 1);
+        int b = _hash(str, bit_arr_size, 2);
+        int c = _hash(str, bit_arr_size, 3);
+        int d = _hash(str, bit_arr_size, 4);
+        int e = _hash(str, bit_arr_size, 5);
 
         bit_arr_ptr[a] = true;
         bit_arr_ptr[b] = true;
@@ -32,11 +40,11 @@ void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str){
 }
 
 bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str){
-    int a = _hash1(str, bit_arr_size);
-    int b = _hash2(str, bit_arr_size);
-    int c = _hash3(str, bit_arr_size);
-    int d = _hash4(str, bit_arr_size);
-    int e = _hash5(str, bit_arr_size);
+    int a = _hash(str, bit_arr_size, 1);
+    int b = _hash(str, bit_arr_size, 2);
+    int c = _hash(str, bit_arr_size, 3);
+    int d = _hash(str, bit_arr_size, 4);
+    int e = _hash(str, bit_arr_size, 5);
 
     if (bit_arr_ptr[a] && bit_arr_ptr[b] && bit_arr_ptr[c] && bit_arr_ptr[d] && bit_arr_ptr[e]){
         return true;
@@ -44,57 +52,37 @@ bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str){
     return false;
 }
 
-static int _hash1(char* str, int bit_arr_size){
-    // _hash1 idea sourced from: https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/
+int test_hash(bool* bit_arr_ptr, int bit_arr_size, char* str, int k){
+    return _hash(str, bit_arr_size, k);
+}
+
+static int _hash(char* str, int bit_arr_size, int k){
     int hash = 0;
     int str_length = strlen(str);
-    // for every character, cast it to int and add to hash, then modulo hash by bit_arr_size.
-    for (int i = 0; i < str_length; i++) 
-    {
-        hash = (hash + ((int)str[i]));
-        hash = hash % bit_arr_size;
+    // Convert string to sha256 hash
+    uint8_t temp_hash_1[32];
+    calc_sha_256(temp_hash_1, str, str_length);
+    // Chaining sha256 k-1 times
+    for (int i = 0; i < k-1; i++) {
+        uint8_t temp_hash_2[32];
+        calc_sha_256(temp_hash_2, temp_hash_1, 32);
+        memcpy(temp_hash_1, temp_hash_2, 32); // replace temp_hash_1 with temp_hash_2
     }
+    // For every character in sha256 hash, cast to int and add to hash. After the addition, modulo hash by bit_arr_size.
+    hash = _APHash((char*)temp_hash_1, 32) % bit_arr_size;
+    
     return hash;
 }
 
-static int _hash2(char* str, int bit_arr_size){
-    int hash = 0;
-    int str_length = strlen(str);
-    // for every character, cast to int multiply by 2-squared and add to hash, after getting sum modulo hash by bit_arr_size.
-    for (int i = 0; i < str_length; i++) 
-    {
-        hash = (hash + ((int)str[i]) * 2 * 2);
-        hash = hash % bit_arr_size;
-    }
-    return hash;
-}
+unsigned int _APHash(char* str, unsigned int length) {
+	unsigned int hash = 0xAAAAAAAA;
+	unsigned int i = 0;
 
-static int _hash3(char* str, int bit_arr_size){
-    int hash = 0;
-    int str_length = strlen(str);
-    for(int i = 0; i < str_length; i++){
-        hash = (hash + ((int)str[i]) * 3 * 3 * 3);
-        hash = hash % bit_arr_size;
-    }
-    return hash;
-}
+	for (i = 0; i < length; str++, i++)
+	{
+		hash ^= ((i & 1) == 0) ? ((hash << 7) ^ (*str) * (hash >> 3)) :
+			(~((hash << 11) + ((*str) ^ (hash >> 5))));
+	}
 
-static int _hash4(char* str, int bit_arr_size){
-    int hash = 0;
-    int str_length = strlen(str);
-    for(int i = 0; i < str_length; i++){
-        hash = (hash + ((int)str[i]) * 4 * 4 * 4 * 4);
-        hash = hash % bit_arr_size;
-    }
-    return hash;
-}
-
-static int _hash5(char* str, int bit_arr_size){
-    int hash = 0;
-    int str_length = strlen(str);
-    for(int i = 0; i < str_length; i++){
-        hash = (hash + ((int)str[i]) * 5 * 5 * 5 * 5 * 5);
-        hash = hash % bit_arr_size;
-    }
-    return hash;
+	return hash;
 }
