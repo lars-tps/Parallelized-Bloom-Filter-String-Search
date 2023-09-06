@@ -4,9 +4,11 @@
 // Author: Tan Pei Sheng
 // Last modified: September 6th 2023
 //////////////////////////////////////////////////////////////////////////////////////////////
+#ifndef BLOOM_FILTER_H 
+#define BLOOM_FILTER_H 
+
 #include <stdbool.h>
 #include <string.h>
-#include "./sha-256.h"
 
 /*
  * Function:  bloom_filter_create_bit_array
@@ -57,3 +59,5 @@ bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str);
  *  returns: hash value
  */
 int test_hash(bool* bit_arr_ptr, int bit_arr_size, char* str, int k);
+
+#endif
