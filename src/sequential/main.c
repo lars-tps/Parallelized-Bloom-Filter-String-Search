@@ -45,19 +45,9 @@ int main(int argc, char* argv[]){
         int tag;
         while (fscanf(fp, "%s %d\n", str, &tag) != EOF) {
             if (bloom_filter_search(bit_arr_ptr, BIT_ARR_SIZE, str)) {
-                int test_hash_val_1 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 1);
-                int test_hash_val_2 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 2);
-                int test_hash_val_3 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 3);
-                int test_hash_val_4 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 4);
-                int test_hash_val_5 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 5);
-                printf("%s is probably in the bloom filter. \nhash_1 = %d\nhash_2 = %d\nhash_3 = %d\nhash_4 = %d\nhash_5 = %d\n", str, test_hash_val_1, test_hash_val_2, test_hash_val_3, test_hash_val_4, test_hash_val_5);
+                printf("%s is probably in the bloom filter.\n", str);
             } else {
-                int test_hash_val_1 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 1);
-                int test_hash_val_2 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 2);
-                int test_hash_val_3 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 3);
-                int test_hash_val_4 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 4);
-                int test_hash_val_5 = test_hash(bit_arr_ptr, BIT_ARR_SIZE, str, 5);
-                printf("%s is definitely not in the bloom filter. \nhash_1 = %d\nhash_2 = %d\nhash_3 = %d\nhash_4 = %d\nhash_5 = %d\n", str, test_hash_val_1, test_hash_val_2, test_hash_val_3, test_hash_val_4, test_hash_val_5);
+                printf("%s is definitely not in the bloom filter.\n", str);
             }
         }
         free(bit_arr_ptr);
