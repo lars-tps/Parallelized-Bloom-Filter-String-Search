@@ -10,6 +10,7 @@
 #include <time.h>
 #include <math.h>
 #include "./bloom_filter.h"
+#include "./word_counter.h"
 
 int _calc_bit_array_size(int total_unique_word_count);
 int _calc_num_hash_functions(int bit_arr_size, int total_unique_word_count);

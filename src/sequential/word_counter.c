@@ -11,9 +11,9 @@
  * 
  *  returns: true if word is in array, false otherwise
  */
-bool is_word_in_array(char* word, char** arr, int arr_size);
+bool _is_word_in_array(char* word, char** arr, int arr_size);
 
-bool is_word_in_array(char* word, char** arr, int arr_size){
+bool _is_word_in_array(char* word, char** arr, int arr_size){
     for (int i = 0; i < arr_size; i++) {
         if (strcmp(word, arr[i]) == 0) { //strcmp returns 0 if strings are equal
             return true;
@@ -31,6 +31,7 @@ int word_counter_total_word_counter(char* file_path){
 
     char str[100];
     int total_word_count = 0;
+    // count total number of words in file
     while (fscanf(fp, "%s\n", str) != EOF) {
         total_word_count++;
     }

@@ -32,6 +32,6 @@ int word_counter_total_word_counter(char* file_path);
  * 
  *  returns: total number of unique words in file
  */
-int word_counter_total_unqiue_word_counter(char* file_path);
+int word_counter_total_unique_word_counter(char* file_path);
 
 #endif
