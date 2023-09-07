@@ -29,9 +29,10 @@ bool* bloom_filter_create_bit_array(bool* bit_arr_ptr, int bit_arr_size);
  *
  *  bit_arr_ptr: pointer to array
  *  bit_arr_size: size of array
+ *  num_hash_functions: number of hash functions
  *  str: string to insert
  */
-void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str);
+void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, int num_hash_functions, char* str);
 
 /*
  * Function:  bloom_filter_search
@@ -40,11 +41,12 @@ void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str);
  *
  *  bit_arr_ptr: pointer to array
  *  bit_arr_size: size of array
+ *  num_hash_functions: number of hash functions
  *  str: string to search for
  *
  *  returns: true if string is found, false otherwise
  */
-bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str);
+bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, int num_hash_functions, char* str);
 
 /*
  * Function:  _hash

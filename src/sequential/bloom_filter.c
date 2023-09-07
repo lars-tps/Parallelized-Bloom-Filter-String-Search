@@ -15,35 +15,23 @@ bool* bloom_filter_create_bit_array(bool* bit_arr_ptr, int bit_arr_size){
     return bit_arr_ptr;
 }
 
-void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, char* str){
-    
-    if (!bloom_filter_search(bit_arr_ptr, bit_arr_size, str)){
-        // Number of hashing function is based on 1,376,656 words of input, 5% false positive rate, and bit array size of 8,583,759
-        int a = _hash(str, bit_arr_size, 1);
-        int b = _hash(str, bit_arr_size, 2);
-        int c = _hash(str, bit_arr_size, 3);
-        int d = _hash(str, bit_arr_size, 4);
-        int e = _hash(str, bit_arr_size, 5);
-
-        bit_arr_ptr[a] = true;
-        bit_arr_ptr[b] = true;
-        bit_arr_ptr[c] = true;
-        bit_arr_ptr[d] = true;
-        bit_arr_ptr[e] = true;
+void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, int num_hash_functions, char* str){
+    if (!bloom_filter_search(bit_arr_ptr, bit_arr_size, num_hash_functions, str)){
+        for (int k = 1; k <= num_hash_functions; k++){
+            int hash = _hash(str, bit_arr_size, k);
+            bit_arr_ptr[hash] = true;
+        }
     }
 }
 
-bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, char* str){
-    int a = _hash(str, bit_arr_size, 1);
-    int b = _hash(str, bit_arr_size, 2);
-    int c = _hash(str, bit_arr_size, 3);
-    int d = _hash(str, bit_arr_size, 4);
-    int e = _hash(str, bit_arr_size, 5);
-
-    if (bit_arr_ptr[a] && bit_arr_ptr[b] && bit_arr_ptr[c] && bit_arr_ptr[d] && bit_arr_ptr[e]){
-        return true;
+bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, int num_hash_functions, char* str){
+    for (int k = 1; k <= num_hash_functions; k++){
+        int hash = _hash(str, bit_arr_size, k);
+        if (bit_arr_ptr[hash] == false){
+            return false;
+        }
     }
-    return false;
+    return true;
 }
 
 int test_hash(bool* bit_arr_ptr, int bit_arr_size, char* str, int k){
