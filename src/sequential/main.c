@@ -36,7 +36,10 @@ int main(int argc, char* argv[]){
         }
 
         // Search for words from query file in bloom filter
-        FILE* fp = fopen(argv[argc - 1], "r"); // the last file
+        FILE* fp = fopen(argv[argc - 1], "r"); // the last file is the query file
+        FILE* result_fp = fopen("result.txt", "w");
+        int accurate_word_count = 0;
+        int total_word_count = 0;
         if (fp == NULL) {
             printf("Error opening file %s", argv[argc - 1]);
             return 1;
@@ -44,13 +47,23 @@ int main(int argc, char* argv[]){
         char str[100]; 
         int tag;
         while (fscanf(fp, "%s %d\n", str, &tag) != EOF) {
+            total_word_count++;
             if (bloom_filter_search(bit_arr_ptr, BIT_ARR_SIZE, str)) {
-                printf("%s is probably in the bloom filter.\n", str);
+                fprintf(result_fp, "%s 1\n", str);
+                if (tag == 1) {
+                    accurate_word_count++;
+                }
             } else {
-                printf("%s is definitely not in the bloom filter.\n", str);
+                fprintf(result_fp, "%s 0\n", str);
+                if (tag == 0) {
+                    accurate_word_count++;
+                }
             }
         }
+        float accuracy = (float)accurate_word_count / (float)total_word_count * 100;
+        printf("Bloom Filter Accuracy: %.2f%%\n", accuracy);
         free(bit_arr_ptr);
+        fclose(result_fp);
         fclose(fp);
     }
 }
