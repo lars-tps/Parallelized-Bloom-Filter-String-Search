@@ -33,11 +33,23 @@ int main(int argc, char* argv[]){
     } else if (argc < 3) {
         printf("Please provide a query file for searches.");
     } else {
+        // initialize time variables for timing the various parts of the program
+        struct timespec start, end, startComp, endComp; 
+	    double time_taken; 
+
         // determine number of unique words in all text files
+        clock_gettime(CLOCK_MONOTONIC, &start); // start timer
         int total_unique_word_count = 0;
         for (int i = 1; i < argc - 1; i++) { // every file except the last one
             total_unique_word_count += word_counter_total_unique_word_counter(argv[i]);
         }
+
+        clock_gettime(CLOCK_MONOTONIC, &end); // end timer
+        // calculate time taken
+        time_taken = (end.tv_sec - start.tv_sec) * 1e9;
+        time_taken = (time_taken + (end.tv_nsec - start.tv_nsec)) * 1e-9;
+        printf("Total Unique Word Count Time: %lf\n", time_taken);
+
         printf("Total Unique Word Count from input text files: %d\n", total_unique_word_count);
 
         // determine size of bit array
@@ -50,12 +62,9 @@ int main(int argc, char* argv[]){
         bool* bit_arr_ptr = malloc(bit_arr_size * sizeof(bool));
         bloom_filter_create_bit_array(bit_arr_ptr, bit_arr_size);
 
-        // initialize time variables
-        struct timespec start, end, startComp, endComp; 
-	    double time_taken; 
-        
-        clock_gettime(CLOCK_MONOTONIC, &start); // start timer
         // Insert words from text files into bloom filter
+        clock_gettime(CLOCK_MONOTONIC, &start); // start timer
+
         for (int i = 1; i < argc - 1; i++) { // every file except the last one
             FILE* fp = fopen(argv[i], "r");
             if (fp == NULL) {
@@ -64,12 +73,13 @@ int main(int argc, char* argv[]){
             }
             char str[100]; 
             while (fscanf(fp, "%s\n", str) != EOF) {
-                bloom_filter_insert(bit_arr_ptr, bit_arr_size, str);
+                bloom_filter_insert(bit_arr_ptr, bit_arr_size, num_hash_functions, str);
             }
             fclose(fp);
         }
 
         clock_gettime(CLOCK_MONOTONIC, &end); // end timer
+        // calculate and print time taken
         time_taken = (end.tv_sec - start.tv_sec) * 1e9;
         time_taken = (time_taken + (end.tv_nsec - start.tv_nsec)) * 1e-9;
         printf("Bloom Filter Insertion Time: %lf\n", time_taken);
@@ -90,7 +100,7 @@ int main(int argc, char* argv[]){
 
         while (fscanf(fp, "%s %d\n", str, &tag) != EOF) {
             // total_word_count++;
-            if (bloom_filter_search(bit_arr_ptr, bit_arr_size, str)) {
+            if (bloom_filter_search(bit_arr_ptr, bit_arr_size, num_hash_functions, str)) {
                 fprintf(result_fp, "%s 1\n", str);
                 // if (tag == 1) {
                 //     accurate_word_count++;
@@ -104,6 +114,7 @@ int main(int argc, char* argv[]){
         }
 
         clock_gettime(CLOCK_MONOTONIC, &endComp); // end timer
+        // calculate and print time taken
         time_taken = (endComp.tv_sec - startComp.tv_sec) * 1e9;
         time_taken = (time_taken + (endComp.tv_nsec - startComp.tv_nsec)) * 1e-9;
         printf("Bloom Filter Search Time: %lf\n", time_taken);
