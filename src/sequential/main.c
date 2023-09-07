@@ -55,9 +55,10 @@ int main(int argc, char* argv[]){
 
         // determine size of bit array
         int bit_arr_size = _calc_bit_array_size(total_unique_word_count);
-
+        printf("Bit Array Size: %d\n", bit_arr_size);
         // determine number of hash functions
         int num_hash_functions = _calc_num_hash_functions(bit_arr_size, total_unique_word_count);
+        printf("Number of Hash Functions: %d\n", num_hash_functions);
 
         // Create bloom filter
         bool* bit_arr_ptr = malloc(bit_arr_size * sizeof(bool));
