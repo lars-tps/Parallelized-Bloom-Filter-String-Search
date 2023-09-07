@@ -8,8 +8,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 #include "./bloom_filter.h"
-#define BIT_ARR_SIZE 8583759
+
+int _calc_bit_array_size(int total_unique_word_count);
+int _calc_num_hash_functions(int bit_arr_size, int total_unique_word_count);
+
+int _calc_bit_array_size(int total_unique_word_count){
+    // formula from Ian Boyd: https://stackoverflow.com/questions/658439/how-many-hash-functions-does-my-bloom-filter-need
+    // accessed on 7th September 2023
+    return -total_unique_word_count * log(0.01) / (log(2) * log(2));
+}
+
+int _calc_num_hash_functions(int bit_arr_size, int total_unique_word_count){
+    // formula from Ian Boyd: https://stackoverflow.com/questions/658439/how-many-hash-functions-does-my-bloom-filter-need
+    // accessed on 7th September 2023
+    return bit_arr_size / total_unique_word_count * log(2); 
+}
 
 int main(int argc, char* argv[]){
     if (argc < 2) {
@@ -18,9 +33,22 @@ int main(int argc, char* argv[]){
     } else if (argc < 3) {
         printf("Please provide a query file for searches.");
     } else {
+        // determine number of unique words in all text files
+        int total_unique_word_count = 0;
+        for (int i = 1; i < argc - 1; i++) { // every file except the last one
+            total_unique_word_count += word_counter_total_unique_word_counter(argv[i]);
+        }
+        printf("Total Unique Word Count from input text files: %d\n", total_unique_word_count);
+
+        // determine size of bit array
+        int bit_arr_size = _calc_bit_array_size(total_unique_word_count);
+
+        // determine number of hash functions
+        int num_hash_functions = _calc_num_hash_functions(bit_arr_size, total_unique_word_count);
+
         // Create bloom filter
-        bool* bit_arr_ptr = malloc(BIT_ARR_SIZE * sizeof(bool));
-        bloom_filter_create_bit_array(bit_arr_ptr, BIT_ARR_SIZE);
+        bool* bit_arr_ptr = malloc(bit_arr_size * sizeof(bool));
+        bloom_filter_create_bit_array(bit_arr_ptr, bit_arr_size);
 
         // initialize time variables
         struct timespec start, end, startComp, endComp; 
@@ -36,7 +64,7 @@ int main(int argc, char* argv[]){
             }
             char str[100]; 
             while (fscanf(fp, "%s\n", str) != EOF) {
-                bloom_filter_insert(bit_arr_ptr, BIT_ARR_SIZE, str);
+                bloom_filter_insert(bit_arr_ptr, bit_arr_size, str);
             }
             fclose(fp);
         }
@@ -62,7 +90,7 @@ int main(int argc, char* argv[]){
 
         while (fscanf(fp, "%s %d\n", str, &tag) != EOF) {
             // total_word_count++;
-            if (bloom_filter_search(bit_arr_ptr, BIT_ARR_SIZE, str)) {
+            if (bloom_filter_search(bit_arr_ptr, bit_arr_size, str)) {
                 fprintf(result_fp, "%s 1\n", str);
                 // if (tag == 1) {
                 //     accurate_word_count++;
