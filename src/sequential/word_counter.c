@@ -22,7 +22,7 @@ bool _is_word_in_array(char* word, char** arr, int arr_size){
     return false;
 }
 
-int word_counter_total_word_counter(char* file_path){
+int word_counter_total_word_counter(char* file_path, int file_length){
     FILE* fp = fopen(file_path, "r");
     if (fp == NULL) {
         printf("Error opening file %s", file_path);
@@ -32,9 +32,11 @@ int word_counter_total_word_counter(char* file_path){
     char str[100];
     int total_word_count = 0;
     // count total number of words in file
-    while (fscanf(fp, "%s\n", str) != EOF) {
+    for (int i = 0; i < file_length; i++) {
+        fscanf(fp, "%s\n", str);
         total_word_count++;
     }
+    
     fclose(fp);
     return total_word_count;
 }
@@ -46,16 +48,20 @@ int word_counter_total_unique_word_counter(char* file_path){
         return 1;
     }
 
+    // calculate file length
+    int file_length = calc_file_length(file_path);
+
+    // create array of unique words
     char str[100];
-    int total_unique_word_count = 0;
-    char** unique_words_arr = malloc(sizeof(char*) * word_counter_total_word_counter(file_path));
+    char** unique_words_arr = malloc(sizeof(char*) * word_counter_total_word_counter(file_path, file_length));
     int unique_words_arr_size = 0;
-    // add unique words to unique_words_arr and increment counters if word is not in unique_words_arr
-    while (fscanf(fp, "%s\n", str) != EOF) {
-        if (_is_word_in_array(str, unique_words_arr, unique_words_arr_size) == 0) { // if word is not in array
+    // count total number of unique words in file
+    for (int i = 0; i < file_length; i++) {
+        fscanf(fp, "%s\n", str);
+        if (!_is_word_in_array(str, unique_words_arr, unique_words_arr_size)) 
+        {
             unique_words_arr[unique_words_arr_size] = strdup(str);
             unique_words_arr_size++;
-            total_unique_word_count++;
         }
     }
 
@@ -74,5 +80,21 @@ int word_counter_total_unique_word_counter(char* file_path){
     free(unique_words_arr);
     fclose(fp);
 
-    return total_unique_word_count;
+    return unique_words_arr_size;
+}
+
+int calc_file_length(char* file_path){
+    FILE* fp = fopen(file_path, "r");
+    if (fp == NULL) {
+        printf("Error opening file %s", file_path);
+        return 1;
+    }
+
+    int file_length = 0;
+    char str[100];
+    while (fscanf(fp, "%s\n", str) != EOF) {
+        file_length++;
+    }
+    fclose(fp);
+    return file_length;
 }
