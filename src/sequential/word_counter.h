@@ -13,17 +13,6 @@
 #include <string.h>
 
 /*
- * Function:  word_counter_total_word_counter
- * --------------------
- * Counts the total number of words in a file
- *
- *  file_path: path to file
- * 
- *  returns: total number of words in file
- */
-int word_counter_total_word_counter(char* file_path, int file_length);
-
-/*
  * Function:  word_counter_total_unique_word_counter
  * --------------------
  * Counts the total number of unique words in a file
@@ -32,7 +21,7 @@ int word_counter_total_word_counter(char* file_path, int file_length);
  * 
  *  returns: total number of unique words in file
  */
-int word_counter_total_unique_word_counter(char* file_path);
+int word_counter_total_unique_word_counter(char* file_path, int file_length);
 
 /*
  * Function:  calc_file_length

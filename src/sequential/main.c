@@ -44,8 +44,10 @@ int main(int argc, char* argv[]){
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         clock_gettime(CLOCK_MONOTONIC, &start); // start timer
         int total_unique_word_count = 0;
+        int file_length = 0;
         for (int i = 1; i < argc - 1; i++) { // every file except the last one
-            total_unique_word_count += word_counter_total_unique_word_counter(argv[i]);
+            file_length = calc_file_length(argv[i]);
+            total_unique_word_count += word_counter_total_unique_word_counter(argv[i], file_length);
         }
 
         clock_gettime(CLOCK_MONOTONIC, &end); // end timer
