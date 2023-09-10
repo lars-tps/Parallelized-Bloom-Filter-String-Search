@@ -39,6 +39,9 @@ int main(int argc, char* argv[]){
         struct timespec start, end, startComp, endComp; 
 	    double time_taken; 
 
+        // say hello
+        printf("Hello, World! This is the start of the program. Executing...\n");
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         // UNIQUE WORD COUNTING
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +110,7 @@ int main(int argc, char* argv[]){
         }
         char str[100]; 
         int result_tag;
+        int query_tag;
 
         clock_gettime(CLOCK_MONOTONIC, &startComp); // start timer
 
@@ -115,7 +119,7 @@ int main(int argc, char* argv[]){
         int* query_words_arr_result_tag = malloc(sizeof(int) * file_length);
         // Search for words from query file in bloom filter
         for (int i = 0; i < file_length; i++) {
-            fscanf(fp, "%s\n", str);
+            fscanf(fp, "%s %d\n", str, &query_tag);
             result_tag = bloom_filter_search(bit_arr_ptr, bit_arr_size, num_hash_functions, str);
             query_words_arr[i] = strdup(str);
             query_words_arr_result_tag[i] = result_tag;
