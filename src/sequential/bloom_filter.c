@@ -25,13 +25,14 @@ void bloom_filter_insert(bool* bit_arr_ptr, int bit_arr_size, int num_hash_funct
 }
 
 bool bloom_filter_search(bool* bit_arr_ptr, int bit_arr_size, int num_hash_functions, char* str){
+    bool flag = true;
     for (int k = 1; k <= num_hash_functions; k++){
         int hash = _hash(str, bit_arr_size, k);
         if (bit_arr_ptr[hash] == false){
-            return false;
+            flag = false;
         }
     }
-    return true;
+    return flag;
 }
 
 int test_hash(bool* bit_arr_ptr, int bit_arr_size, char* str, int k){
