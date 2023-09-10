@@ -110,7 +110,7 @@ int main(int argc, char* argv[]){
 
         clock_gettime(CLOCK_MONOTONIC, &startComp); // start timer
 
-        int file_length = calc_file_length(argv[argc - 1]);
+        file_length = calc_file_length(argv[argc - 1]);
         char** query_words_arr = malloc(sizeof(char*) * file_length);
         int* query_words_arr_result_tag = malloc(sizeof(int) * file_length);
         // Search for words from query file in bloom filter
