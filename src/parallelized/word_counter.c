@@ -25,36 +25,16 @@ bool _is_word_in_array(char* word, char** arr, int arr_size){
     return false;
 }
 
-int word_counter_total_word_counter(char* file_path){
+int word_counter_total_unique_word_counter(char* file_path, int file_length){
     FILE* fp = fopen(file_path, "r");
     if (fp == NULL) {
         printf("Error opening file %s", file_path);
         return 1;
     }
-
-    char str[100];
-    int total_word_count = 0;
-    // count total number of words in file
-    while (fscanf(fp, "%s\n", str) != EOF) {
-        total_word_count++;
-    }
-    fclose(fp);
-    return total_word_count;
-}
-
-int word_counter_total_unique_word_counter(char* file_path){
-    FILE* fp = fopen(file_path, "r");
-    if (fp == NULL) {
-        printf("Error opening file %s", file_path);
-        return 1;
-    }
-
-    // calculate file length
-    int file_length = calc_file_length(file_path);
 
     // create array of unique words
     char str[100];
-    char** unique_words_arr = malloc(sizeof(char*) * word_counter_total_word_counter(file_path));
+    char** unique_words_arr = malloc(sizeof(char*) * file_length);
     int unique_words_arr_size = 0;
     // count total number of unique words in file, in parallel
     #pragma omp parallel for private(str) shared(unique_words_arr, unique_words_arr_size) schedule(dynamic)

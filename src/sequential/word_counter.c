@@ -29,9 +29,6 @@ int word_counter_total_unique_word_counter(char* file_path, int file_length){
         return 1;
     }
 
-    // calculate file length
-    int file_length = calc_file_length(file_path);
-
     // create array of unique words
     char str[100];
     char** unique_words_arr = malloc(sizeof(char*) * file_length);
