@@ -46,7 +46,7 @@ int word_counter_total_unique_word_counter(char* file_path, int file_length){
     // output unique_wordlist to txt file
     FILE* wordlist_fp = fopen("unique_wordlist.txt", "a");
     for (int i = 0; i < unique_words_arr_size; i++) {
-        fprintf(wordlist_fp, "%s\n", unique_words_arr[i]);
+        fprintf(wordlist_fp, "%s 1\n", unique_words_arr[i]);
     }
     fclose(wordlist_fp);
 
