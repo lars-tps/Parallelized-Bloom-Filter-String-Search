@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
             }
             char str[100]; 
             int file_length = calc_file_length(argv[i]);
-            #pragma omp parallel for private(str)
+            #pragma omp parallel for private(str) num_threads(4)
             for (int j = 0; j < file_length; j++) {
                 fscanf(fp, "%s\n", str);
                 bloom_filter_insert(bit_arr_ptr, bit_arr_size, num_hash_functions, str);
@@ -117,7 +117,7 @@ int main(int argc, char* argv[]){
         char** query_words_arr = malloc(sizeof(char*) * file_length);
         int* query_words_arr_result_tag = malloc(sizeof(int) * file_length);
         // Search for words from query file in bloom filter
-        #pragma omp parallel for private(str, result_tag)
+        #pragma omp parallel for private(str, result_tag) num_threads(4)
         for (int i = 0; i < file_length; i++) {
             fscanf(fp, "%s %d\n", str, &query_tag);
             result_tag = bloom_filter_search(bit_arr_ptr, bit_arr_size, num_hash_functions, str);

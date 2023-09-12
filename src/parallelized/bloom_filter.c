@@ -9,7 +9,6 @@
 static int _hash(char* str, int bit_arr_size, int k);
 
 bool* bloom_filter_create_bit_array(bool* bit_arr_ptr, int bit_arr_size){
-    #pragma omp parallel for
     for(int i = 0; i < bit_arr_size; i++){
         bit_arr_ptr[i] = false;
     }
