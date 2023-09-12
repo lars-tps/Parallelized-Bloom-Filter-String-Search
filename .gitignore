@@ -4,3 +4,4 @@ src/preprocessing/result.txt
 src/preprocessing/ITALIAN.txt
 *.txt
 *.job
+*.sh
