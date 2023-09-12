@@ -1,2 +1,5 @@
 
 .DS_Store
+src/preprocessing/result.txt
+src/preprocessing/ITALIAN.txt
+*.txt
